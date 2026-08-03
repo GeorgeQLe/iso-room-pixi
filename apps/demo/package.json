@@ -1,0 +1,19 @@
+{
+  "name": "@iso-room-pixi/demo",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "vite", "build": "vite build" },
+  "dependencies": {
+    "@iso-room/pixi": "workspace:*",
+    "@iso-room/pixi-editor-react": "workspace:*",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.9",
+    "@types/react-dom": "19.1.7",
+    "@vitejs/plugin-react": "4.7.0",
+    "vite": "7.0.6",
+    "typescript": "5.8.3"
+  }
+}

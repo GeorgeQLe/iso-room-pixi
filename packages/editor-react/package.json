@@ -1,0 +1,18 @@
+{
+  "name": "@iso-room/pixi-editor-react",
+  "version": "1.0.0",
+  "description": "Accessible React editor for @iso-room/pixi",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "scripts": { "build": "tsc -p tsconfig.json", "typecheck": "pnpm --filter @iso-room/pixi build && tsc -p tsconfig.json --noEmit" },
+  "dependencies": {
+    "@iso-room/pixi": "workspace:*",
+    "iso-room-schema": "^1.0.0",
+    "react": "19.1.1"
+  },
+  "devDependencies": { "@types/react": "19.1.9", "typescript": "5.8.3" },
+  "peerDependencies": { "react": ">=18" }
+}

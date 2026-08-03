@@ -1,0 +1,19 @@
+{
+  "name": "iso-room-pixi-workspace",
+  "private": true,
+  "license": "MIT",
+  "packageManager": "pnpm@10.22.0",
+  "scripts": {
+    "build": "pnpm --filter iso-room-schema build && pnpm --filter './packages/**' build && pnpm --filter @iso-room-pixi/demo build",
+    "test": "vitest run tests",
+    "typecheck": "pnpm --filter iso-room-schema build && pnpm --filter './packages/**' typecheck",
+    "dev": "pnpm --filter @iso-room-pixi/demo dev",
+    "e2e": "playwright test",
+    "import-assets": "node scripts/import-assets.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.54.1",
+    "typescript": "5.8.3",
+    "vitest": "3.2.4"
+  }
+}
