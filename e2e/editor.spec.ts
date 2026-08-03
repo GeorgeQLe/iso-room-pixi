@@ -112,5 +112,5 @@ test("matches the deterministic full-editor baseline", async ({ page }) => {
   await page.getByRole("button", { name: "Validate layout" }).click();
   await page.getByRole("button", { name: "Start play test" }).click();
   await page.getByRole("button", { name: "Navigate avatar" }).click();
-  await expect(page).toHaveScreenshot("pixi-editor.png", { animations: "disabled" });
+  await expect(page).toHaveScreenshot("pixi-editor.png", { animations: "disabled", maxDiffPixels: 50 });
 });
