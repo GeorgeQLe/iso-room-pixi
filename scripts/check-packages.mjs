@@ -195,7 +195,7 @@ void document;
 `,
   );
 
-  run("pnpm", ["install", "--offline", "--ignore-scripts"], consumerDir);
+  run("pnpm", ["install", "--ignore-scripts"], consumerDir);
   run("node", ["smoke.mjs"], consumerDir);
   run(
     "pnpm",
