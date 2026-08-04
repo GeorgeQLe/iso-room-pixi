@@ -6,7 +6,13 @@ import { applyCommand, type EditCommand } from "./commands.js";
 import { createEmptyLayout } from "./layout.js";
 import { findPath } from "./navigation.js";
 import { gridToScreen, screenToGrid, type ProjectionOptions, type ScreenPoint } from "./projection.js";
-import { PixiRoomRenderer, type PixiRendererOptions } from "./renderer.js";
+import { PixiSpriteCatalog } from "./catalog.js";
+import {
+  PixiRoomRenderer,
+  type PixiRendererOptions,
+  type PixiRendererSurfaces,
+  type PixiRenderPolicy,
+} from "./renderer.js";
 
 export type EngineMode = "build" | "play";
 export type EngineEvent =
@@ -23,16 +29,19 @@ export interface CreateEngineOptions extends PixiRendererOptions {
 
 export class IsoRoomPixiEngine {
   private layout: LayoutDocument;
-  private readonly renderer = new PixiRoomRenderer();
+  private readonly catalog = new PixiSpriteCatalog();
+  private readonly renderer = new PixiRoomRenderer(this.catalog);
   private readonly listeners = new Set<EngineListener>();
   private history: LayoutDocument[] = [];
   private future: LayoutDocument[] = [];
   private selection = new Set<string>();
   private route: GridPoint[] = [];
-  private catalogs = new Map<string, AssetDefinition>();
   private mode: EngineMode = "build";
 
-  constructor(layout: LayoutDocument = createEmptyLayout()) { this.layout = structuredClone(layout); }
+  constructor(layout: LayoutDocument = createEmptyLayout()) {
+    this.layout = structuredClone(layout);
+    this.catalog.register(this.layout.assets);
+  }
   async mount(host: HTMLElement, options?: PixiRendererOptions): Promise<void> {
     await this.renderer.mount(host, options);
     this.render();
@@ -43,7 +52,9 @@ export class IsoRoomPixiEngine {
   loadLayout(input: string | LayoutDocument): ValidationResult {
     const parsed = parseLayout(input);
     if (!parsed.success || !parsed.document) return parsed.validation;
-    this.history = []; this.future = []; this.layout = parsed.document; this.selection.clear(); this.render();
+    this.history = []; this.future = []; this.layout = parsed.document; this.selection.clear();
+    this.catalog.register(this.layout.assets);
+    this.render();
     this.emit({ type: "selection", ids: [] });
     this.emit({ type: "layout", layout: this.getLayout() });
     return parsed.validation;
@@ -74,8 +85,15 @@ export class IsoRoomPixiEngine {
   }
   getSelection(): string[] { return [...this.selection]; }
   validate(): ValidationResult { const result = validateLayout(this.layout); this.emit({ type: "validation", result }); return result; }
-  registerCatalog(assets: readonly AssetDefinition[]): void { assets.forEach((asset) => this.catalogs.set(asset.id, structuredClone(asset))); }
-  getCatalog(): AssetDefinition[] { return [...this.catalogs.values()].map((item) => structuredClone(item)); }
+  registerCatalog(assets: readonly AssetDefinition[]): void {
+    this.catalog.register(assets);
+    this.render();
+  }
+  async preloadCatalog(ids?: readonly string[]): Promise<void> {
+    await this.catalog.preload(ids);
+    this.render();
+  }
+  getCatalog(): AssetDefinition[] { return this.catalog.getDefinitions(); }
   queryPath(start: GridPoint, goal: GridPoint): GridPoint[] { this.route = findPath(this.layout, start, goal); this.render(); return [...this.route]; }
   setMode(mode: EngineMode): ValidationResult {
     const result = this.validate();
@@ -85,6 +103,12 @@ export class IsoRoomPixiEngine {
   getMode(): EngineMode { return this.mode; }
   gridToScreen(point: GridPoint): ScreenPoint { return gridToScreen(point, this.projection()); }
   screenToGrid(point: ScreenPoint, snap = true): GridPoint { return screenToGrid(point, this.projection(), snap); }
+  getRendererSurfaces(): PixiRendererSurfaces { return this.renderer.getSurfaces(); }
+  setRenderPolicy(policy: Partial<PixiRenderPolicy>): void {
+    this.renderer.setRenderPolicy(policy);
+    this.render();
+  }
+  getRenderPolicy(): Readonly<PixiRenderPolicy> { return this.renderer.getRenderPolicy(); }
   setCamera(camera: Partial<{ x: number; y: number; zoom: number }>): void { this.renderer.setCamera(camera); }
   getCamera(): Readonly<{ x: number; y: number; zoom: number }> { return this.renderer.getCamera(); }
   private projection(): ProjectionOptions { return { tileWidth: this.layout.grid.tileWidth, tileHeight: this.layout.grid.tileHeight }; }

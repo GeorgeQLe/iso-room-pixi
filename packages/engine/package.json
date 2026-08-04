@@ -1,6 +1,6 @@
 {
   "name": "@iso-room/pixi",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "Framework-neutral PixiJS 8 isometric room engine",
   "license": "MIT",
   "repository": {
