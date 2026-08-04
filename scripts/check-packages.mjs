@@ -97,7 +97,9 @@ try {
   await mkdir(artifactDir, { recursive: true });
   await mkdir(consumerDir, { recursive: true });
 
-  run("pnpm", ["--filter", "iso-room-schema", "build"]);
+  if (!providedSchemaTarball) {
+    run("pnpm", ["--filter", "iso-room-schema", "build"]);
+  }
   run("pnpm", ["--filter", "./packages/**", "build"]);
 
   const schemaTarball =
