@@ -3,3 +3,5 @@ packages:
   - apps/*
   - iso-room-schema
 linkWorkspacePackages: true
+onlyBuiltDependencies:
+  - esbuild

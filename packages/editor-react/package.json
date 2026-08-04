@@ -1,18 +1,31 @@
 {
   "name": "@iso-room/pixi-editor-react",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "Accessible React editor for @iso-room/pixi",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeorgeQLe/iso-room-pixi.git",
+    "directory": "packages/editor-react"
+  },
+  "homepage": "https://github.com/GeorgeQLe/iso-room-pixi#readme",
+  "bugs": { "url": "https://github.com/GeorgeQLe/iso-room-pixi/issues" },
+  "publishConfig": { "access": "public" },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "files": ["dist", "README.md", "LICENSE"],
   "scripts": { "build": "tsc -p tsconfig.json", "typecheck": "pnpm --filter @iso-room/pixi build && tsc -p tsconfig.json --noEmit" },
   "dependencies": {
-    "@iso-room/pixi": "workspace:*",
-    "iso-room-schema": "^1.0.0",
-    "react": "19.1.1"
+    "@iso-room/pixi": "workspace:^",
+    "iso-room-schema": "^1.0.0-rc.1"
   },
-  "devDependencies": { "@types/react": "19.1.9", "typescript": "5.8.3" },
-  "peerDependencies": { "react": ">=18" }
+  "devDependencies": {
+    "@types/react": "19.1.9",
+    "react": "19.1.1",
+    "typescript": "5.8.3"
+  },
+  "peerDependencies": { "react": ">=18" },
+  "engines": { "node": ">=20" }
 }

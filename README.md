@@ -3,7 +3,9 @@
 PixiJS 8 sprite-native renderer, renderer-independent command engine, and accessible
 React editor for `iso-room-schema`.
 
-Clone with `--recurse-submodules` until `iso-room-schema` is published to npm.
+The current packages are `@iso-room/pixi@1.0.0-rc.1` and
+`@iso-room/pixi-editor-react@1.0.0-rc.1`. The schema submodule keeps standalone
+development reproducible while the release candidates are prepared for npm.
 
 The engine API includes lifecycle, loading and canonical export, command history,
 selection events, validation, coordinate transforms, catalog registration, deterministic
@@ -24,3 +26,7 @@ depth updates. CI tests correctness and deterministic screenshots, not machine-s
 Optional CC0 importers are intentionally build-time only: pin an upstream archive URL
 and SHA-256 in a local importer manifest, verify before extraction, and emit
 `attribution.json`. Runtime hotlinks are forbidden.
+
+Run `pnpm pack:check` before publishing. It builds both packages, verifies their
+tarball allowlists, installs the packed schema, engine, and editor into an
+isolated consumer, compiles TypeScript imports, and executes runtime imports.

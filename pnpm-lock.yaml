@@ -74,18 +74,18 @@ importers:
   packages/editor-react:
     dependencies:
       '@iso-room/pixi':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../engine
       iso-room-schema:
-        specifier: ^1.0.0
+        specifier: ^1.0.0-rc.1
         version: link:../../iso-room-schema
-      react:
-        specifier: 19.1.1
-        version: 19.1.1
     devDependencies:
       '@types/react':
         specifier: 19.1.9
         version: 19.1.9
+      react:
+        specifier: 19.1.1
+        version: 19.1.1
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -93,12 +93,12 @@ importers:
   packages/engine:
     dependencies:
       iso-room-schema:
-        specifier: ^1.0.0
+        specifier: ^1.0.0-rc.1
         version: link:../../iso-room-schema
+    devDependencies:
       pixi.js:
         specifier: 8.12.0
         version: 8.12.0
-    devDependencies:
       typescript:
         specifier: 5.8.3
         version: 5.8.3

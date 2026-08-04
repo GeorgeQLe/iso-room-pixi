@@ -7,6 +7,7 @@
     "build": "pnpm --filter iso-room-schema build && pnpm --filter './packages/**' build && pnpm --filter @iso-room-pixi/demo build",
     "test": "vitest run tests",
     "typecheck": "pnpm --filter iso-room-schema build && pnpm --filter './packages/**' typecheck",
+    "pack:check": "node scripts/check-packages.mjs",
     "dev": "pnpm --filter @iso-room-pixi/demo dev",
     "e2e": "playwright test",
     "import-assets": "node scripts/import-assets.mjs"
